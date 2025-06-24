@@ -18,7 +18,6 @@
 
 Chat with your WhatsApp conversations from any AI clients or agentic tool integration.
 
-
 Here are various prompts you can use with any AI assistant to interact with WhatsApp through the Wassenger MCP connector:
 
 ### 📱 Basic Messaging
@@ -75,7 +74,6 @@ Here are various prompts you can use with any AI assistant to interact with What
 - "Set up an auto-reply for messages received outside business hours (9 AM - 5 PM)"
 - "Create a workflow: when someone messages 'INFO', automatically send our company brochure"
 - "Analyze sentiment in customer support conversations and flag negative ones"
-
 
 ## Usage
 
