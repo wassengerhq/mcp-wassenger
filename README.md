@@ -14,6 +14,12 @@
 
 > **Product update**: 🚀 Automate anything on WhatsApp with our new No-Code solution [Wassenger Flows](https://wassenger.com/flows) ⚡✨
 
+## Example prompts
+
+Chat with your WhatsApp conversations from any AI clients or agentic tool integration.
+
+
+
 ## Usage
 
 All the most popular MCP clients (Claude Desktop, VS Code Copilot, Cursor, Windsurf...) use the following config format:
@@ -67,6 +73,51 @@ To bypass authentication, or to emit custom headers on all requests to your remo
   }
 },
 ```
+
+### Usage as a tool in OpenAI
+
+Here's how you can use the Wassenger MCP server as a tool with the OpenAI JavaScript client:
+
+```javascript
+import OpenAI from 'openai';
+
+const wassengerKey = process.env.WASSENGER_API_KEY || 'wassenger-api-key-here'
+
+const openai = new OpenAI({
+  apiKey: process.env.OPENAI_API_KEY,
+});
+
+// Example: Send a WhatsApp message using OpenAI's new Responses API with MCP
+const response = await openai.responses.create({
+  model: 'o4-mini',
+  tools: [
+    {
+      type: 'mcp',
+      server_label: 'wassenger',
+      server_url: `https://api.wassenger.com/mcp?key=${wassengerKey}`,
+      require_approval: 'never'
+    }
+  ],
+  input: 'Send a WhatsApp message to +1234567890 saying "Hello from AI!"'
+});
+
+console.log('Response:', response);
+```
+
+Make sure to install the required dependencies:
+
+```bash
+npm install openai
+```
+
+And set your environment variables:
+
+```bash
+export OPENAI_API_KEY="your-openai-api-key"
+export WASSENGER_API_KEY="your-wassenger-api-key"
+```
+
+This approach uses OpenAI's new Responses API with MCP integration, which automatically handles tool discovery, execution, and communication with the Wassenger MCP server without requiring manual MCP client setup.
 
 ### Flags
 
