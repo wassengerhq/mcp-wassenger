@@ -4,9 +4,58 @@
 
 ✨ **Easily integrate** [Wassenger WhatsApp API](https://wassenger.com) with any [MCP-powered](https://modelcontextprotocol.io/) AI client including ChatGPT, VS Code Copilot, Claude Desktop, Cursor, Windsurf and [many more](https://github.com/punkpeye/awesome-mcp-clients?tab=readme-ov-file#clients)!
 
-💬 **Transform how you communicate** - automate responses, analyze chat patterns, and manage customer conversations at scale, all through simple conversational commands with your AI assistant.
+💬 **Transform how you communicate** - automate responses, analyze chat patterns, and manage customer conversations at scale, manage WhatsApp chats and groups, everything through simple conversational text or voice commands with your AI assistant.
 
-> ⚠️ **Note**: Wassenger MCP interface is currently in beta.
+> ⚠️ **Note**: You only need to use this package if your MCP client does not [support HTTP streaming](https://modelcontextprotocol.io/specification/2025-03-26/basic/transports#streamable-http) (previously known as SSE connection). Otherwise follow [these instructions](#http-streaming-usage).
+
+## Contents
+
+- [About](#about)
+- [Example prompts](#example-prompts)
+  - [📱 Basic Messaging](#-basic-messaging)
+  - [📊 Conversation Analysis](#-conversation-analysis)
+  - [👥 Group Management](#-group-management)
+  - [⏰ Message Scheduling](#-message-scheduling)
+  - [🔍 Contact Validation & Management](#-contact-validation--management)
+  - [📈 Analytics & Insights](#-analytics--insights)
+  - [🔔 Status & Monitoring](#-status--monitoring)
+  - [🔄 Bulk Operations](#-bulk-operations)
+  - [🔐 Account Management](#-account-management)
+  - [🎯 Smart Automation](#-smart-automation)
+- [MCP streaming usage](#mcp-streaming-usage)
+  - [Supported Clients](#supported-clients)
+  - [Claude Desktop Configuration](#claude-desktop-configuration)
+  - [VS Code Copilot Configuration](#vs-code-copilot-configuration)
+  - [Benefits of HTTP Streaming](#benefits-of-http-streaming)
+  - [Getting Your API Key](#getting-your-api-key)
+- [Usage](#usage)
+  - [Custom Headers](#custom-headers)
+  - [Usage as a tool in OpenAI](#usage-as-a-tool-in-openai)
+  - [Flags](#flags)
+  - [Claude Desktop](#claude-desktop)
+  - [VS Code Extension / Copilot](#vs-code-extension--copilot)
+  - [Cursor](#cursor)
+  - [Windsurf](#windsurf)
+  - [Cline](#cline)
+  - [Continue.dev](#continuedev)
+  - [Zed Editor](#zed-editor)
+  - [Jan AI](#jan-ai)
+  - [Open WebUI](#open-webui)
+  - [Sourcegraph Cody](#sourcegraph-cody)
+  - [OpenAI Responses API](#openai-responses-api)
+- [Troubleshooting](#troubleshooting)
+  - [Clear your `~/.mcp-auth` directory](#clear-your-mcp-auth-directory)
+  - [Check your Node version](#check-your-node-version)
+  - [Restart Claude](#restart-claude)
+  - [VPN Certs](#vpn-certs)
+  - [Check the logs](#check-the-logs)
+- [Debugging](#debugging)
+  - [Debug Logs](#debug-logs)
+  - [Authentication Errors](#authentication-errors)
+  - ["Client" mode](#client-mode)
+- [License](#license)
+
+## About
 
 [Wassenger](https://wassenger.com) is a versatile WhatsApp Team Chat and API solution for business messaging to automate anything on WhatsApp.
 
@@ -74,6 +123,82 @@ Here are various prompts you can use with any AI assistant to interact with What
 - "Set up an auto-reply for messages received outside business hours (9 AM - 5 PM)"
 - "Create a workflow: when someone messages 'INFO', automatically send our company brochure"
 - "Analyze sentiment in customer support conversations and flag negative ones"
+
+## MCP streaming usage
+
+If your MCP client supports [**HTTP streaming**](https://modelcontextprotocol.io/specification/2025-03-26/basic/transports#streamable-http) (previously known as Server-Sent Events or SSE transport), you can connect directly to the Wassenger MCP server without installing this package. This is the preferred method as it's faster and requires no local setup.
+
+### Supported Clients
+
+Most modern MCP clients support HTTP streaming, including:
+
+- **Claude Desktop** (latest versions)
+- **VS Code Copilot** with MCP extension
+- **Cursor** (v0.48.0+)
+- **Windsurf**
+- **OpenAI Responses API**
+- **ChatGPT** (Pro users have access, soon more users)
+
+### Claude Desktop Configuration
+
+Add this to your `claude_desktop_config.json`:
+
+```json
+{
+  "mcpServers": {
+    "wassenger": {
+      "type": "http",
+      "url": "https://api.wassenger.com/mcp?key=YOUR_WASSENGER_API_KEY"
+    }
+  }
+}
+```
+
+Or using environment variables:
+
+```json
+{
+  "mcpServers": {
+    "wassenger": {
+      "type": "http",
+      "url": "https://api.wassenger.com/mcp?key=${WASSENGER_API_KEY}",
+      "env": {
+        "WASSENGER_API_KEY": "your-api-key-here"
+      }
+    }
+  }
+}
+```
+
+### VS Code Copilot Configuration
+
+In VS Code settings (JSON format):
+
+```json
+{
+  "mcp.servers": {
+    "wassenger": {
+      "url": "https://api.wassenger.com/mcp?key=YOUR_WASSENGER_API_KEY",
+      "transport": "http-streaming"
+    }
+  }
+}
+```
+
+### Benefits of HTTP Streaming
+
+- ✅ **No local installation** required
+- ✅ **Faster connection** times
+- ✅ **Automatic updates** - always uses the latest server version
+- ✅ **Better reliability** - no Node.js dependency issues
+- ✅ **Simpler configuration** - just a URL
+
+### Getting Your API Key
+
+1. Sign up at [Wassenger.com](https://wassenger.com)
+2. Go to your [API settings](https://app.wassenger.com/api)
+3. Copy your API key
+4. Replace `YOUR_WASSENGER_API_KEY` in the configuration above
 
 ## Usage
 
@@ -183,7 +308,7 @@ This approach uses OpenAI's new Responses API with MCP integration, which automa
       "args": [
         "-y"
         "mcp-wassenger",
-        "https://remote.mcp.server/sse"
+        "API_KEY_GOES_HERE"
       ]
 ```
 
@@ -200,29 +325,7 @@ This approach uses OpenAI's new Responses API with MCP integration, which automa
 ```json
       "args": [
         "mcp-wassenger",
-        "https://remote.mcp.server/sse",
-        "9696"
-      ]
-```
-
-* To change which host `mcp-wassenger` registers as the OAuth callback URL (by default `localhost`), add the `--host` flag.
-
-```json
-      "args": [
-        "mcp-wassenger",
-        "https://remote.mcp.server/sse",
-        "--host",
-        "127.0.0.1"
-      ]
-```
-
-* To allow HTTP connections in trusted private networks, add the `--allow-http` flag. Note: This should only be used in secure private networks where traffic cannot be intercepted.
-
-```json
-      "args": [
-        "mcp-wassenger",
-        "http://internal-service.vpc/sse",
-        "--allow-http"
+        "API_KEY_GOES_HERE"
       ]
 ```
 
@@ -231,19 +334,19 @@ This approach uses OpenAI's new Responses API with MCP integration, which automa
 ```json
       "args": [
         "mcp-wassenger",
-        "https://remote.mcp.server/sse",
+        "API_KEY_GOES_HERE",
         "--debug"
       ]
 ```
 
-### Transport Strategies
+<!-- ### Transport Strategies
 
 MCP Remote supports different transport strategies when connecting to an MCP server. This allows you to control whether it uses Server-Sent Events (SSE) or HTTP transport, and in what order it tries them.
 
 Specify the transport strategy with the `--transport` flag:
 
 ```bash
-npx mcp-wassenger https://example.remote/server --transport sse-only
+npx mcp-wassenger $API_KEY --transport sse-only
 ```
 
 **Available Strategies:**
@@ -251,8 +354,8 @@ npx mcp-wassenger https://example.remote/server --transport sse-only
 - `http-first` (default): Tries HTTP transport first, falls back to SSE if HTTP fails with a 404 error
 - `sse-first`: Tries SSE transport first, falls back to HTTP if SSE fails with a 405 error
 - `http-only`: Only uses HTTP transport, fails if the server doesn't support it
-- `sse-only`: Only uses SSE transport, fails if the server doesn't support it
-
+- `sse-only`: Only uses SSE transport, fails if the server doesn't support it -->
+<!--
 ### Static OAuth Client Metadata
 
 MCP Remote supports providing static OAuth client metadata instead of using the mcp-wassenger defaults.
@@ -261,9 +364,9 @@ This is useful when connecting to OAuth servers that expect specific client/soft
 Provide the client metadata as a JSON string or as a `@` prefixed filepath with the `--static-oauth-client-metadata` flag:
 
 ```bash
-npx mcp-wassenger https://example.remote/server --static-oauth-client-metadata '{ "scope": "space separated scopes" }'
+npx mcp-wassenger $API_KEY --static-oauth-client-metadata '{ "scope": "space separated scopes" }'
 # uses node readfile, so you probably want to use absolute paths if you're not sure what the cwd is
-npx mcp-wassenger https://example.remote/server --static-oauth-client-metadata '@/Users/username/Library/Application Support/Claude/oauth_client_metadata.json'
+npx mcp-wassenger $API_KEY --static-oauth-client-metadata '@/Users/username/Library/Application Support/Claude/oauth_client_metadata.json'
 ```
 
 ### Static OAuth Client Information
@@ -279,10 +382,10 @@ Provide the client metadata as a JSON string or as a `@` prefixed filepath with 
 ```bash
 export MCP_REMOTE_CLIENT_ID=xxx
 export MCP_REMOTE_CLIENT_SECRET=yyy
-npx mcp-wassenger https://example.remote/server --static-oauth-client-info "{ \"client_id\": \"$MCP_REMOTE_CLIENT_ID\", \"client_secret\": \"$MCP_REMOTE_CLIENT_SECRET\" }"
+npx mcp-wassenger $API_KEY --static-oauth-client-info "{ \"client_id\": \"$MCP_REMOTE_CLIENT_ID\", \"client_secret\": \"$MCP_REMOTE_CLIENT_SECRET\" }"
 # uses node readfile, so you probably want to use absolute paths if you're not sure what the cwd is
-npx mcp-wassenger https://example.remote/server --static-oauth-client-info '@/Users/username/Library/Application Support/Claude/oauth_client_info.json'
-```
+npx mcp-wassenger $API_KEY --static-oauth-client-info '@/Users/username/Library/Application Support/Claude/oauth_client_info.json'
+``` -->
 
 ### Claude Desktop
 
@@ -299,6 +402,10 @@ Restart Claude Desktop to pick up the changes in the configuration file.
 Upon restarting, you should see a hammer icon in the bottom right corner
 of the input box.
 
+### VS Code Extension / Copilot
+
+[Official Docs](https://code.visualstudio.com/docs/copilot/copilot-extensibility-overview#_model-context-protocol-mcp). Add MCP servers through VS Code settings or via the Command Palette (`Ctrl+Shift+P` / `Cmd+Shift+P`) by searching for "MCP". Configuration is managed through VS Code's settings interface.
+
 ### Cursor
 
 [Official Docs](https://docs.cursor.com/context/model-context-protocol). The configuration file is located at `~/.cursor/mcp.json`.
@@ -309,6 +416,117 @@ As of version `0.48.0`, Cursor supports unauthed SSE servers directly. If your M
 
 [Official Docs](https://docs.codeium.com/windsurf/mcp). The configuration file is located at `~/.codeium/windsurf/mcp_config.json`.
 
+### Cline
+
+[Official Docs](https://cline.bot/docs/mcp). The configuration file is located at `~/.cline/mcp_servers.json`.
+
+### Continue.dev
+
+[Official Docs](https://docs.continue.dev/customize/model-context-protocol). The configuration file is located at `~/.continue/config.json`. Continue.dev supports MCP servers for enhanced code context and AI-powered development workflows.
+
+### Zed Editor
+
+[Official Docs](https://zed.dev/docs/assistant/model-context-protocol). Configure MCP servers in Zed's settings to extend the AI assistant capabilities. Zed provides native MCP integration for seamless development experience.
+
+### Jan AI
+
+[Official Docs](https://jan.ai/docs/extensions/mcp). Jan AI supports MCP servers through its extension system, allowing you to integrate external tools and data sources with local AI models.
+
+### Open WebUI
+
+[Official MCP Integration](https://docs.openwebui.com/features/mcp). Open WebUI provides MCP support for connecting external tools and services to your self-hosted AI interface, enabling powerful workflow automation.
+
+### Sourcegraph Cody
+
+[Official Docs](https://sourcegraph.com/docs/cody/core-concepts/context). Cody supports MCP integration for enhanced code understanding and AI-assisted development across your entire codebase.
+
+### OpenAI Responses API
+
+You can use the Wassenger MCP server as a tool with OpenAI's new Responses API, which provides native MCP integration without requiring manual client setup.
+
+#### JavaScript Example
+
+```javascript
+import OpenAI from 'openai';
+
+const wassengerKey = process.env.WASSENGER_API_KEY || 'your-wassenger-api-key';
+
+const openai = new OpenAI({
+  apiKey: process.env.OPENAI_API_KEY,
+});
+
+// Send a WhatsApp message using OpenAI's Responses API with MCP
+const response = await openai.responses.create({
+  model: 'o1-mini',
+  tools: [
+    {
+      type: 'mcp',
+      server_label: 'wassenger',
+      server_url: `https://api.wassenger.com/mcp?key=${wassengerKey}`,
+      require_approval: 'never'
+    }
+  ],
+  input: 'Send a WhatsApp message to +1234567890 saying "Hello from AI!"'
+});
+
+console.log('Response:', response);
+```
+
+#### Python Example
+
+```python
+import os
+from openai import OpenAI
+
+wassenger_key = os.getenv('WASSENGER_API_KEY', 'your-wassenger-api-key')
+
+client = OpenAI(
+    api_key=os.getenv('OPENAI_API_KEY')
+)
+
+# Send a WhatsApp message using OpenAI's Responses API with MCP
+response = client.responses.create(
+    model='o1-mini',
+    tools=[
+        {
+            'type': 'mcp',
+            'server_label': 'wassenger',
+            'server_url': f'https://api.wassenger.com/mcp?key={wassenger_key}',
+            'require_approval': 'never'
+        }
+    ],
+    input='Send a WhatsApp message to +1234567890 saying "Hello from AI!"'
+)
+
+print('Response:', response)
+```
+
+#### Installation
+
+Make sure to install the required dependencies:
+
+**JavaScript:**
+```bash
+npm install openai
+```
+
+**Python:**
+```bash
+pip install openai
+```
+
+#### Environment Variables
+
+Set your API keys as environment variables:
+
+```bash
+export OPENAI_API_KEY="your-openai-api-key"
+export WASSENGER_API_KEY="your-wassenger-api-key"
+```
+
+This approach uses OpenAI's native MCP integration, which automatically handles tool discovery, execution, and communication with the Wassenger MCP server without requiring manual MCP client configuration.
+
+<!--
 ## Building Remote MCP Servers
 
 For instructions on building & deploying remote MCP servers, including acting as a valid OAuth client, see the following resources:
@@ -324,7 +542,7 @@ For more information about testing these servers, see also:
 
 * https://developers.cloudflare.com/agents/guides/test-remote-mcp-server/
 
-Know of more resources you'd like to share? Please add them to this Readme and send a PR!
+Know of more resources you'd like to share? Please add them to this Readme and send a PR! -->
 
 ## Troubleshooting
 
@@ -362,7 +580,7 @@ this might look like:
       "command": "npx",
       "args": [
         "mcp-wassenger",
-        "https://remote.mcp.server/sse"
+        "API_KEY_GOES_HERE"
       ],
       "env": {
         "NODE_EXTRA_CA_CERTS": "{your CA certificate file path}.pem"
@@ -388,7 +606,7 @@ For troubleshooting complex issues, especially with token refreshing or authenti
 ```json
 "args": [
   "mcp-wassenger",
-  "https://remote.mcp.server/sse",
+  "API_KEY_GOES_HERE",
   "--debug"
 ]
 ```
@@ -411,7 +629,7 @@ You can run `rm -rf ~/.mcp-auth` to clear any locally stored state and tokens.
 Run the following on the command line (not from an MCP server):
 
 ```shell
-npx -p mcp-wassenger@latest mcp-wassenger-client https://remote.mcp.server/sse
+npx -p mcp-wassenger@latest mcp-wassenger-client API_KEY_GOES_HERE
 ```
 
 This will run through the entire authorization flow and attempt to list the tools & resources at the remote URL. Try this after running `rm -rf ~/.mcp-auth` to see if stale credentials are your problem, otherwise hopefully the issue will be more obvious in these logs than those in your MCP client.

@@ -6,11 +6,20 @@
     "mcp",
     "stdio",
     "sse",
-    "remote",
-    "oauth",
+    "http-streaming",
+    "modelcontextprotocol",
+    "wassenger",
+    "claude",
+    "chatgpt",
     "whatsapp",
+    "whatsapp business",
     "whatsapp-api",
-    "whatsapp"
+    "whatsapp-bot",
+    "whatsapp-mcp",
+    "whatsapp-chatgpt",
+    "whatsapp-automation",
+    "whatsapp-llm",
+    "whatsapp-ai"
   ],
   "author": "Wassenger <code@wassenger.com>",
   "repository": "https://github.com/wassengerhq/mcp-wassenger",
@@ -29,7 +38,8 @@
     "build": "tsup",
     "build:watch": "tsup --watch",
     "check": "prettier --check . && tsc",
-    "lint-fix": "prettier --check . --write"
+    "lint-fix": "prettier --check . --write",
+    "build:all": "node .builder/build.js"
   },
   "dependencies": {
     "@modelcontextprotocol/sdk": "https://pkg.pr.new/geelen/typescript-sdk/@modelcontextprotocol/sdk@cdf3508",
