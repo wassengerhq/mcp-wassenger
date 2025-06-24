@@ -2,3 +2,4 @@ node_modules
 .mcp-cli
 dist
 .npmrc
+.github
