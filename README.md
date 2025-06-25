@@ -6,22 +6,22 @@
 
 💬 **Transform how you communicate** - automate responses, analyze chat patterns, and manage customer conversations at scale, manage WhatsApp chats and groups, everything through simple conversational text or voice commands with your AI assistant.
 
-> ⚠️ **Note**: You only need to use this package if your MCP client does not [support HTTP streaming](https://modelcontextprotocol.io/specification/2025-03-26/basic/transports#streamable-http) (previously known as SSE connection). Otherwise follow [these instructions](#http-streaming-usage).
+> ⚠️ **Note**: You only need to use this package if your MCP client does not [support HTTP streaming](https://modelcontextprotocol.io/specification/2025-03-26/basic/transports#streamable-http) (previously known as SSE connection). To use a remote HTTP connection [read these instructions](#http-streaming-usage).
 
 ## Contents
 
 - [About](#about)
 - [Example prompts](#example-prompts)
-  - [📱 Basic Messaging](#-basic-messaging)
-  - [📊 Conversation Analysis](#-conversation-analysis)
-  - [👥 Group Management](#-group-management)
-  - [⏰ Message Scheduling](#-message-scheduling)
-  - [🔍 Contact Validation & Management](#-contact-validation--management)
-  - [📈 Analytics & Insights](#-analytics--insights)
+  - [📱 Basic Messaging & Communication](#-basic-messaging--communication)
+  - [📊 Conversation Analysis & Insights](#-conversation-analysis--insights)
+  - [👥 Group & Team Management](#-group--team-management)
+  - [⏰ Message Scheduling & Automation](#-message-scheduling--automation)
+  - [🔍 Contact & Device Management](#-contact--device-management)
+  - [📈 Analytics & Reporting](#-analytics--reporting)
   - [🔔 Status & Monitoring](#-status--monitoring)
-  - [🔄 Bulk Operations](#-bulk-operations)
-  - [🔐 Account Management](#-account-management)
-  - [🎯 Smart Automation](#-smart-automation)
+  - [🔄 Bulk Operations & Campaigns](#-bulk-operations--campaigns)
+  - [🎯 Smart Business Automation](#-smart-business-automation)
+  - [🔐 Account & File Management](#-account--file-management)
 - [MCP streaming usage](#mcp-streaming-usage)
   - [Supported Clients](#supported-clients)
   - [Claude Desktop Configuration](#claude-desktop-configuration)
@@ -69,62 +69,79 @@ Chat with your WhatsApp conversations from any AI clients or agentic tool integr
 
 Here are various prompts you can use with any AI assistant to interact with WhatsApp through the Wassenger MCP connector:
 
-### 📱 Basic Messaging
+### 📱 Basic Messaging & Communication
 - "Send a WhatsApp message to +1234567890 saying 'Hello! How are you today?'"
 - "Send a message to the contact named 'John Smith' with the text 'Meeting confirmed for 3 PM'"
 - "Send an urgent message to +44123456789: 'Please call me back ASAP'"
+- "Send a WhatsApp message with an image from [URL] to [phone-number]"
+- "Reply to message [message-id] in chat [chat-id] with 'Thanks for your feedback!'"
 
-### 📊 Conversation Analysis
+### 📊 Conversation Analysis & Insights
 - "Summarize my last 10 WhatsApp messages with +1555123456"
 - "Analyze the conversation tone in my chat with the Marketing Team group"
 - "Show me the key topics discussed in my conversation with Sarah over the past week"
 - "Count how many messages I've received today from all contacts"
+- "Search for messages containing 'invoice' in chat [chat-id]"
+- "Generate chat activity report grouped by day for this month"
 
-### 👥 Group Management
+### 👥 Group & Team Management
+- "Create a WhatsApp group called 'Team Updates' with participants +1234567890, +0987654321"
 - "How many participants are in the 'Project Team Alpha' WhatsApp group?"
 - "List all members of my 'Family Chat' group"
-- "Show me the most active participants in the 'Sales Team' group this week"
-- "Get the admin list for the 'Customer Support' group"
+- "Add +1234567890 to WhatsApp group [group-id]"
+- "Make +1234567890 an admin in group [group-id]"
+- "Get the invite link for group [group-id]"
 
-### ⏰ Message Scheduling
+### ⏰ Message Scheduling & Automation
 - "Schedule a message to +1234567890 saying 'Happy Birthday!' to be sent tomorrow at 9 AM"
 - "Set up a reminder message for the team group about the meeting next Friday at 2 PM"
-- "Schedule a follow-up message to my client in 3 days asking about project status"
+- "Set up auto-replies for messages received outside business hours (9 AM - 5 PM)"
+- "Create a workflow: when someone messages 'INFO', automatically send our company brochure"
 
-### 🔍 Contact Validation & Management
+### 🔍 Contact & Device Management
 - "Check if the phone number +1555987654 is a valid WhatsApp number"
-- "Verify if +44987654321 has WhatsApp installed"
+- "What WhatsApp numbers do I have connected to Wassenger?"
+- "Show me the status of all my WhatsApp devices"
 - "Get the profile information for contact +1234567890"
 - "Show me all my recent contacts from the past month"
 
-### 📈 Analytics & Insights
+### 📈 Analytics & Reporting
 - "Generate a report of my most frequent WhatsApp contacts this month"
 - "Show me my busiest WhatsApp conversation days this week"
-- "Analyze which groups have the highest message volume"
+- "Which agent responds fastest to customer inquiries?"
+- "Show me chat volume trends over the last 30 days"
 - "Count unread messages across all my chats"
+- "Find customers who haven't interacted in the last 60 days"
 
 ### 🔔 Status & Monitoring
 - "Check the delivery status of my last message to +1234567890"
 - "Show me all failed message deliveries from today"
 - "Monitor if my contact +1555123456 has read my recent messages"
-- "Get the online status of my important business contacts"
+- "Post 'Working on exciting new features!' as my WhatsApp status"
 
-### 🔄 Bulk Operations
+### 🔄 Bulk Operations & Campaigns
 - "Send the same announcement to all members of my 'Team Updates' group individually"
 - "Broadcast a holiday greeting to my top 10 most contacted numbers"
-- "Send a survey link to all participants in the 'Product Feedback' group"
+- "Create a campaign called 'Welcome Series' to send 'Welcome to our service!' to multiple contacts"
+- "Start campaign [campaign-id] and check its delivery status"
 
-### 🔐 Account Management
-- "Show me my current Wassenger account usage and limits"
-- "List all my connected WhatsApp devices and their status"
-- "Get my account's message quota for this month"
-
-### 🎯 Smart Automation
-- "Set up an auto-reply for messages received outside business hours (9 AM - 5 PM)"
-- "Create a workflow: when someone messages 'INFO', automatically send our company brochure"
+### 🎯 Smart Business Automation
+- "Create a label called 'VIP Customer' with red color and apply it to important chats"
+- "Assign chat [chat-id] to agent [agent-id]"
+- "Show me all chats with the 'support' label"
 - "Analyze sentiment in customer support conversations and flag negative ones"
+- "Generate a CSV report of all chats with their last activity"
+- "Find all unread messages in my WhatsApp chats"
 
-## MCP streaming usage
+### 🔐 Account & File Management
+- "Show me my current Wassenger account usage and limits"
+- "Upload an image from [image-url] to use in WhatsApp messages"
+- "List all uploaded files tagged as 'marketing'"
+- "Export all contacts from device [device-id] to JSON"
+
+These prompts cover real-world scenarios for businesses using WhatsApp for customer service, marketing, team collaboration, and automation through the Wassenger platform.
+
+## HTTP streaming usage
 
 If your MCP client supports [**HTTP streaming**](https://modelcontextprotocol.io/specification/2025-03-26/basic/transports#streamable-http) (previously known as Server-Sent Events or SSE transport), you can connect directly to the Wassenger MCP server without installing this package. This is the preferred method as it's faster and requires no local setup.
 
