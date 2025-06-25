@@ -22,12 +22,23 @@
   - [🔄 Bulk Operations & Campaigns](#-bulk-operations--campaigns)
   - [🎯 Smart Business Automation](#-smart-business-automation)
   - [🔐 Account & File Management](#-account--file-management)
-- [MCP streaming usage](#mcp-streaming-usage)
+- [HTTP streaming usage](#http-streaming-usage)
   - [Supported Clients](#supported-clients)
   - [Claude Desktop Configuration](#claude-desktop-configuration)
   - [VS Code Copilot Configuration](#vs-code-copilot-configuration)
   - [Benefits of HTTP Streaming](#benefits-of-http-streaming)
   - [Getting Your API Key](#getting-your-api-key)
+- [MCP Tools Supported](#mcp-tools-supported)
+  - [📱 Core Messaging & Communication](#-core-messaging--communication)
+  - [💬 Chat & Conversation Management](#-chat--conversation-management)
+  - [👥 Group & Team Management](#-group--team-management-1)
+  - [📺 Channel & Broadcasting](#-channel--broadcasting)
+  - [🔄 Campaign & Bulk Operations](#-campaign--bulk-operations)
+  - [📱 Device & Account Management](#-device--account-management)
+  - [👤 Contact & Label Management](#-contact--label-management)
+  - [📁 File & Media Management](#-file--media-management)
+  - [🔧 System & Utilities](#-system--utilities)
+  - [📊 Analytics & Insights](#-analytics--insights)
 - [Usage](#usage)
   - [Custom Headers](#custom-headers)
   - [Usage as a tool in OpenAI](#usage-as-a-tool-in-openai)
@@ -216,6 +227,64 @@ In VS Code settings (JSON format):
 2. Go to your [API settings](https://app.wassenger.com/api)
 3. Copy your API key
 4. Replace `YOUR_WASSENGER_API_KEY` in the configuration above
+
+## MCP Tools Supported
+
+The Wassenger MCP server provides comprehensive WhatsApp automation tools organized into functional categories. All tools use action-based parameters for LLM-friendly interactions:
+
+### 📱 Core Messaging & Communication
+- **`manage_whatsapp_messages`** - Universal message sending with 11 action types: text, media, location, contact, poll, event, scheduled, live, expiring, agent, and template messaging
+- **`manage_whatsapp_message_interactions`** - Message interactions: reply, forward, reaction, and poll voting
+- **`get_whatsapp_chat_messages`** - Comprehensive message retrieval: recent, search, date range, by sender, by type, by ID, advanced search, thread context, and media filtering
+- **`analyze_whatsapp_chat_messages`** - Message analytics: statistics, delivery status tracking, and data export in multiple formats
+
+### 💬 Chat & Conversation Management
+- **`get_whatsapp_chats`** - Universal chat retrieval with 9 actions: recent, unread, by status, assigned, by contact type, by ID, search, archived, and date range filtering
+- **`analyze_whatsapp_chats`** - Chat analytics and export with comprehensive statistics and data export capabilities
+- **`search_whatsapp_chats_by_name`** - Quick chat search by contact name, group name, or channel name
+
+### 👥 Group & Team Management
+- **`manage_whatsapp_groups`** - Complete group operations: search, create, update, join, leave, invite management with 8 action types
+- **`manage_whatsapp_group_participants`** - Participant management: add, remove, promote, demote, approval workflow with 7 action types
+- **`manage_whatsapp_team`** - Team member management: search, create, update, delete, device access control with 7 action types
+- **`manage_whatsapp_departments`** - Department organization: list, create, update, delete with agent assignments and visual customization
+
+### 📺 Channel & Broadcasting
+- **`manage_whatsapp_channels`** - Channel lifecycle management: list, create, update, search, join, leave, image updates with 9 action types
+- **`manage_whatsapp_channel_messages`** - Channel message retrieval with filtering and pagination
+- **`manage_whatsapp_status`** - WhatsApp Status (Stories) management: get, publish, schedule with media support and advanced timing
+
+### 🔄 Campaign & Bulk Operations
+- **`manage_whatsapp_campaigns`** - Bulk messaging campaigns: search, create, update, start, stop, delete with 7 action types
+- **`manage_whatsapp_campaign_contacts`** - Campaign recipient management: search, add, remove contacts with filtering options
+- **`manage_whatsapp_queue`** - Message queue control: status monitoring, queue management, bulk deletion with 3 action types
+
+### 📱 Device & Account Management
+- **`get_whatsapp_devices`** - Device listing with advanced filtering: status, session, search, active/online filtering
+- **`get_whatsapp_device_details`** - Detailed device information: configuration, session status, metrics, and insights
+- **`health_check`** - Comprehensive system health check for MCP server and connected WhatsApp devices
+
+### 👤 Contact & Label Management
+- **`manage_whatsapp_contacts`** - Contact CRUD operations: list, get, create, update, delete, bulk operations, metadata management with 8 action types
+- **`manage_whatsapp_contact_actions`** - Contact blocking: block and unblock operations
+- **`manage_whatsapp_labels`** - Label management: list, create, update, delete with color-coded organization
+
+### 📁 File & Media Management
+- **`search_whatsapp_outbound_files`** - Uploaded file search with advanced filtering by type, size, date, tags, and metadata
+- **`search_whatsapp_chat_files`** - Received file search from WhatsApp chats with comprehensive filtering options
+
+### 🔧 System & Utilities
+- **`ping`** - Basic connectivity test with server status and response time measurement
+
+### 📊 Analytics & Insights
+All tools include comprehensive analytics capabilities:
+- Message delivery tracking and statistics
+- Chat activity analysis and reporting
+- Device performance metrics and monitoring
+- Campaign analytics and success tracking
+- Team productivity insights and reporting
+
+Each tool supports extensive filtering, pagination, sorting, and export capabilities, making them perfect for both manual operations and automated workflows through AI assistants.
 
 ## Usage
 
