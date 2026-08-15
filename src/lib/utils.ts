@@ -38,6 +38,51 @@ function getTimestamp(): string {
   return now.toISOString()
 }
 
+// Query parameters and headers that carry credentials and must never be logged.
+const SENSITIVE_QUERY_PARAMS = new Set(['key', 'token', 'apikey', 'api_key', 'access_token', 'refresh_token', 'secret', 'password'])
+const SENSITIVE_HEADERS = new Set(['authorization', 'token', 'api-key', 'apikey', 'x-api-key', 'cookie', 'proxy-authorization'])
+
+/**
+ * Short, non-reversible fingerprint of a credential, so log lines stay useful
+ * for correlating which key was used without ever disclosing it.
+ */
+export function fingerprint(value: string): string {
+  return crypto.createHash('sha256').update(value).digest('hex').slice(0, 8)
+}
+
+/**
+ * Strips credentials out of a URL, keeping origin and path so logs stay
+ * diagnosable. Unparseable input is redacted wholesale rather than guessed at.
+ */
+export function sanitizeUrl(value: string): string {
+  try {
+    const url = new URL(value)
+    const redacted: string[] = []
+
+    for (const param of [...url.searchParams.keys()]) {
+      if (!SENSITIVE_QUERY_PARAMS.has(param.toLowerCase())) continue
+      redacted.push(`${param}=${fingerprint(url.searchParams.get(param) ?? '')}`)
+      url.searchParams.delete(param)
+    }
+
+    const base = `${url.origin}${url.pathname}${url.search}`
+    return redacted.length ? `${base} [redacted ${redacted.join(', ')}]` : base
+  } catch {
+    return '[unparseable url redacted]'
+  }
+}
+
+/**
+ * Returns a copy of the headers with credential values replaced by fingerprints.
+ */
+export function redactHeaders(headers: Record<string, string>): Record<string, string> {
+  return Object.fromEntries(
+    Object.entries(headers).map(([key, value]) =>
+      SENSITIVE_HEADERS.has(key.toLowerCase()) ? [key, `[redacted:${fingerprint(value)}]`] : [key, value],
+    ),
+  )
+}
+
 // Debug logging function
 export function debugLog(message: string, ...args: any[]) {
   if (!DEBUG) return
@@ -192,7 +237,7 @@ export async function connectToRemoteServer(
   transportStrategy: TransportStrategy = 'http-first',
   recursionReasons: Set<string> = new Set(),
 ): Promise<Transport> {
-  log(`[${pid}] Connecting to remote server: ${serverUrl}`)
+  log(`[${pid}] Connecting to remote server: ${sanitizeUrl(serverUrl)}`)
   const url = new URL(serverUrl)
 
   // Create transport with eventSourceInit to pass Authorization header if present
@@ -615,14 +660,17 @@ export async function parseCommandLineArgs(args: string[], usage: string) {
   }
 
   const serverBaseUrl = process.env.WASSENGER_SERVER_URL || 'https://api.wassenger.com'
-  const serverUrl = `${serverBaseUrl}/mcp?key=${apiKey}`
+  // The API key travels in the Authorization header, never in the URL: the URL
+  // reaches logs, shell history and crash reports. The hash is keyed off this
+  // credential-free URL so it identifies the server rather than the session.
+  const serverUrl = `${serverBaseUrl}/mcp`
   const serverUrlHash = getServerUrlHash(serverUrl)
 
   // Set server hash globally for debug logging
   global.currentServerUrlHash = serverUrlHash
 
   if (DEBUG) {
-    debugLog(`Starting mcp-remote with server URL: ${serverUrl}`)
+    debugLog(`Starting mcp-remote with server URL: ${sanitizeUrl(serverUrl)}`)
   }
 
   const defaultPort = calculateDefaultPort(serverUrlHash)
@@ -649,7 +697,7 @@ export async function parseCommandLineArgs(args: string[], usage: string) {
   }
 
   if (Object.keys(headers).length > 0) {
-    log(`Using custom headers: ${JSON.stringify(headers)}`)
+    log(`Using custom headers: ${JSON.stringify(redactHeaders(headers))}`)
   }
   // Replace environment variables in headers
   // example `Authorization: Bearer ${TOKEN}` will read process.env.TOKEN
@@ -667,7 +715,13 @@ export async function parseCommandLineArgs(args: string[], usage: string) {
     })
   }
 
-  return { apiKey, callbackPort, headers, transportStrategy, host, debug, staticOAuthClientMetadata, staticOAuthClientInfo }
+  // Applied after substitution so an explicit --header Authorization still wins
+  // and so the key itself is never run through the `${VAR}` replacement.
+  if (!Object.keys(headers).some((key) => key.toLowerCase() === 'authorization')) {
+    headers.Authorization = apiKey
+  }
+
+  return { apiKey, serverUrl, callbackPort, headers, transportStrategy, host, debug, staticOAuthClientMetadata, staticOAuthClientInfo }
 }
 
 /**

@@ -113,7 +113,9 @@ export class NodeOAuthClientProvider implements OAuthClientProvider {
         if (typeof tokens.expires_in !== 'number' || tokens.expires_in < 0) {
           debugLog('⚠️ WARNING: Invalid expires_in detected while reading tokens ⚠️', {
             expiresIn: tokens.expires_in,
-            tokenObject: JSON.stringify(tokens),
+            tokenType: tokens.token_type,
+            hasAccessToken: !!tokens.access_token,
+            hasRefreshToken: !!tokens.refresh_token,
             stack: new Error('Invalid expires_in value').stack,
           })
         }
@@ -146,7 +148,9 @@ export class NodeOAuthClientProvider implements OAuthClientProvider {
       if (typeof tokens.expires_in !== 'number' || tokens.expires_in < 0) {
         debugLog('⚠️ WARNING: Invalid expires_in detected in tokens ⚠️', {
           expiresIn: tokens.expires_in,
-          tokenObject: JSON.stringify(tokens),
+          tokenType: tokens.token_type,
+          hasAccessToken: !!tokens.access_token,
+          hasRefreshToken: !!tokens.refresh_token,
           stack: new Error('Invalid expires_in value').stack,
         })
       }

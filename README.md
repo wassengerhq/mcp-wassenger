@@ -276,16 +276,6 @@ The Wassenger MCP server provides comprehensive WhatsApp automation tools organi
 ### 🔧 System & Utilities
 - **`ping`** - Basic connectivity test with server status and response time measurement
 
-### 📊 Analytics & Insights
-All tools include comprehensive analytics capabilities:
-- Message delivery tracking and statistics
-- Chat activity analysis and reporting
-- Device performance metrics and monitoring
-- Campaign analytics and success tracking
-- Team productivity insights and reporting
-
-Each tool supports extensive filtering, pagination, sorting, and export capabilities, making them perfect for both manual operations and automated workflows through AI assistants.
-
 ## Usage
 
 All the most popular MCP clients (Claude Desktop, VS Code Copilot, Cursor, Windsurf...) use the following config format:

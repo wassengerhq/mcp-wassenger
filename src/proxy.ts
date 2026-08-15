@@ -28,7 +28,7 @@ import { createLazyAuthCoordinator } from './lib/coordination'
  * Main function to run the proxy
  */
 async function runProxy(
-  apiKey: string,
+  serverUrl: string,
   callbackPort: number,
   headers: Record<string, string>,
   transportStrategy: TransportStrategy = 'http-first',
@@ -40,8 +40,6 @@ async function runProxy(
   const events = new EventEmitter()
 
   // Get the server URL hash for lockfile operations
-  const serverBaseUrl = process.env.WASSENGER_SERVER_URL || 'https://api.wassenger.com'
-  const serverUrl = `${serverBaseUrl}/mcp?key=${apiKey}`
   const serverUrlHash = getServerUrlHash(serverUrl)
 
   // Create a lazy auth coordinator
@@ -145,8 +143,8 @@ to the CA certificate file. If using claude_desktop_config.json, this might look
 
 // Parse command-line arguments and run the proxy
 parseCommandLineArgs(process.argv.slice(2), 'Usage: npx mcp-wassenger [api-key] [--debug]')
-  .then(({ apiKey, callbackPort, headers, transportStrategy, host, debug, staticOAuthClientMetadata, staticOAuthClientInfo }) => {
-    return runProxy(apiKey, callbackPort, headers, transportStrategy, host, staticOAuthClientMetadata, staticOAuthClientInfo)
+  .then(({ serverUrl, callbackPort, headers, transportStrategy, host, debug, staticOAuthClientMetadata, staticOAuthClientInfo }) => {
+    return runProxy(serverUrl, callbackPort, headers, transportStrategy, host, staticOAuthClientMetadata, staticOAuthClientInfo)
   })
   .catch((error) => {
     log('Fatal error:', error)
