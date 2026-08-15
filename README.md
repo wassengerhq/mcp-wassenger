@@ -6,6 +6,8 @@
 
 💬 **Transform how you communicate** - automate responses, analyze chat patterns, and manage customer conversations at scale, manage WhatsApp chats and groups, everything through simple conversational text or voice commands with your AI assistant.
 
+👉 **[Read the blog post introducing Wassenger MCP server](https://medium.com/@wassenger/introducing-whatsapp-mcp-ai-connector-3d393b52d1b0)**
+
 > ⚠️ **Note**: You only need to use this package if your MCP client does not [support HTTP streaming](https://modelcontextprotocol.io/specification/2025-03-26/basic/transports#streamable-http) (previously known as SSE connection). To use a remote HTTP connection [read these instructions](#http-streaming-usage).
 
 ## Contents
